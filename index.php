@@ -24,7 +24,7 @@
                     $file = fopen( $filename, 'r+' );
                     while (!feof($file)) {
                     $ligne = fgets($file);
-                     echo '<p><b><ol><h1>' .$ligne . '</h1></ol></b></p><br/><br/>' ;
+                     echo '<ul><li>' .$ligne . '</li></ul>' ;
                     }
 
                     
@@ -32,7 +32,7 @@
                     $file = fopen( $filename, 'a' );
                     if(isset($_POST['name'])){
                     $result=$_POST['name'] ;
-                    echo '<p><b><ol><h1>' .$result . '</h1></ol></b></p><br/><br/>' ;
+                    echo '<ul><li>' .$result . '</li></ul>' ;
                     fwrite( $file , $result . "\r\n ") ;
                     }
                   
