@@ -14,35 +14,105 @@
             <div id="body">
             <form action="index.php" method="post">
                 Name: <input type="text" name="name">
-                <input type="submit"><br/>
+                <input type="submit" value="Add new friend"><br/>
            
             </form>
 
-             <h1><b><center> My Best Friends are : <center></b></h1>
+             <h1><b> My Best Friends are : </b></h1>
           <?php
+
             $filename = 'friends.txt';
-                    $file = fopen( $filename, 'r+' );
-                    while (!feof($file)) {
-                    $ligne = fgets($file);
-                     echo '<ul><li>' .$ligne . '</li></ul>' ;
+            $file= fopen($filename , 'r');
+            $friendsArray = array();
+            if($file != false){
+               while (!feof($file)) {
+               $name=trim(fgets($file));
+               if(strlen($name)>0){
+                   $friendsArray[] = $name ;
+               }
+            }
+           
+            fclose($file);
+           }
+
+           
+           
+
+           ///////////////////////////////////// task2 AND task3 /////////////////////////////////////////
+
+           //adding elements to array
+
+           if(isset($_POST['name']) && strlen($_POST['name'])>0){
+
+               $friendsArray[] = $_POST['name'];
+
+            } 
+
+
+            //filter element
+
+            if(isset($_POST['namefilter']) && strlen($_POST['namefilter'])>0 ){ 
+
+                $filter_elm = $_POST['namefilter'];
+
+                for($i=0 ; $i<sizeof($friendsArray) ; $i++){
+
+                $filt = strstr($friendsArray[$i],$filter_elm) ;
+
+                $pos = strpos($friendsArray[$i],$filter_elm);
+
+                if(isset($_POST['startingWith'])) {
+
+                if ($pos !== false) {    
+
+                    if ($pos === 0){
+
+                echo '<ul><li>' . $friendsArray[$i] . '</li></ul>';      
+                     }
+
                     }
 
-                    
-                    //appending to file   
+                    }
+
+                else {
+
+                    if (!empty($filt)){
+
+                echo '<ul><li>' . $friendsArray[$i] . '</li></ul>';
+                }
+
+                }
+            }
+        }
+        
+            else {
+                foreach($friendsArray as $friend) {
+
+                    echo '<ul><li>' .$friend. '</ul></li>'; 
+                }
+                }
+            
+
+                 // appeding elements on file 
                     $file = fopen( $filename, 'a' );
                     if(isset($_POST['name'])){
                     $result=$_POST['name'] ;
-                    echo '<ul><li>' .$result . '</li></ul>' ;
-                    fwrite( $file , $result . "\r\n ") ;
-                    }
-                  
-          ?>
-            </div>
+                    fwrite( $file , "$result \r\n ") ;
+                    }'<br/>';
+
+               
+          ?><br/>
+<form action="index.php" method="post">
+<input type="text" name="namefilter"> <input type="checkbox" name="startingWith">Only names starting with</input> <input type="submit" value="Filter List"> 
+</form>
+ </div>
+         
 
             <div id="footer">
             <p><h1 id="footwhite"><center> Footer </center></h1></p>
             </div>
 
     </body>
-</html>
-<!-- \r -->
+</html> 
+
+
